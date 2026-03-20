@@ -20,8 +20,14 @@ def main():
     if selected_product == "Mirror":
         fixing = st.selectbox(
             "Select Fixing:",
-            ["SS L-Angle", "Push Lock"],
+            ["SS L-Angle", "Push Lock", "Ropes"],
             key="fixing"
+        )
+    if fixing == "Ropes":
+        roof = st.selectbox(
+            "Roof Type:",
+            ["RCC", "MS", "Ply"],
+            key="rope"
         )
 
     # --- Map selections to files in your project folder ---
@@ -35,7 +41,11 @@ def main():
 
     # Resolve the file to serve based on selection
     if selected_product == "Mirror":
-        template_path = templates.get(("Mirror", fixing))
+        if fixing == "Ropes":
+            roof_key = roof.lower()
+            template_path = base_dir / "templates" / f"mirror_inv_rope_{roof_key}.xlsx"
+        else:
+            template_path = templates.get(("Mirror", fixing))
         suggested_name = f"Inventory Sheet - Barrisol - Mirror - {fixing}.xlsx"
     else:
         template_path = templates.get("Translucent Backlit/Non-Backlit")
